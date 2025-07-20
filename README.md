@@ -1,100 +1,53 @@
-# White Matter Tract Overlap Analysis Script
+# JHU White Matter Tract Analysis Script
 
 ## Overview
-This shell script (`extract_jhu_ic2_fa_pos_fsl_cm3.sh`) performs automated quantitative analysis of white matter tract overlaps using FSL neuroimaging tools. It calculates intersection volumes between functional activation masks and anatomically defined white matter tracts from the Johns Hopkins University (JHU) atlas.
+This bash script performs automated analysis of white matter tract overlap with FA (Fractional Anisotropy) masks using the JHU DTI-based white matter atlas. It extracts volumetric measurements, statistical values, and spatial coordinates for specific brain regions of interest.
 
-## Prerequisites
-- **FSL** (FMRIB Software Library) installed and configured
-- **bc** calculator for floating-point arithmetic
-- **zsh** shell environment
-- JHU white matter tract atlas (included with FSL)
+## Features
+- 🧠 Analyzes 20 major white matter tracts from the JHU-ICBM atlas
+- 📊 Calculates overlap between tract regions and user-defined FA masks
+- 📈 Extracts multiple metrics including:
+  - Voxel counts and volumes (mm³ and cm³)
+  - Overlap percentages
+  - Maximum Z-scores from statistical maps
+  - Center of gravity (COG) coordinates
+- 📁 Outputs results in CSV format for easy analysis
 
-## Input Files Required
-1. **Atlas**: `JHU-ICBM-tracts-maxprob-thr0-2mm.nii.gz` - JHU white matter tract atlas
-2. **Mask**: Functional activation mask (e.g., `IC2_FA_mask_4.nii.gz`)
-3. **Z-map**: Statistical map for extracting maximum Z-values (e.g., `Artist_joint_comp_ica_feature_2_002.nii.gz`)
-
-## Output
-CSV file containing detailed overlap metrics for 20 white matter tracts with the following columns:
-- **Label**: Tract identifier (0-19)
-- **TractName**: Anatomical tract name
-- **Voxels**: Number of overlapping voxels
-- **Volume_mm3**: Overlap volume in cubic millimeters
-- **Volume_cm3**: Overlap volume in cubic centimeters
-- **Total_Tract_Voxels**: Total voxels in the complete tract
-- **Overlap_Percent**: Percentage of tract showing overlap
-- **Max_Z**: Maximum Z-score within overlap region
-- **COG_X/Y/Z**: Center of gravity coordinates
-
-## Analyzed White Matter Tracts
-The script processes 20 major white matter pathways:
-
-### Projection Tracts
-- Anterior thalamic radiation (L/R)
-- Corticospinal tract (L/R)
-
-### Association Tracts
-- Superior longitudinal fasciculus (L/R)
-- Superior longitudinal fasciculus temporal part (L/R)
-- Inferior longitudinal fasciculus (L/R)
-- Inferior fronto-occipital fasciculus (L/R)
-- Uncinate fasciculus (L/R)
-
-### Limbic Tracts
-- Cingulum (cingulate gyrus) (L/R)
-- Cingulum (hippocampus) (L/R)
-
-### Commissural Tracts
-- Forceps major
-- Forceps minor
-
-## Algorithm Workflow
-1. **Tract Isolation**: Extract individual tract masks from JHU atlas using label-based thresholding
-2. **Intersection Calculation**: Multiply tract mask with functional activation mask
-3. **Volume Quantification**: Calculate overlap volumes in mm³ and cm³
-4. **Statistical Extraction**: Extract maximum Z-scores from overlap regions
-5. **Spatial Analysis**: Compute center of gravity coordinates
-6. **Cleanup**: Remove intermediate files to save disk space
+## Requirements
+- FSL (FMRIB Software Library)
+- zsh shell
+- bc calculator
 
 ## Usage
-```bash
-# Configure paths in the script
-atlas="/path/to/JHU-ICBM-tracts-maxprob-thr0-2mm.nii.gz"
-mask="/path/to/your_functional_mask.nii.gz"
-zmap="/path/to/your_statistical_map.nii.gz"
-output="your_output_filename.csv"
+1. Configure the paths in the USER CONFIG section:
+   - `atlas`: Path to JHU-ICBM tract atlas
+   - `mask`: Path to your FA mask
+   - `zmap`: Path to your statistical z-map
+   - `output`: Desired output CSV filename
 
-# Run the script
-chmod +x extract_jhu_ic2_fa_pos_fsl_cm3.sh
-./extract_jhu_ic2_fa_pos_fsl_cm3.sh
+2. Run the script:
+```bash
+./Extract_FA_Values_in_mm3_cm3.sh
 ```
 
-## Key Features
-- **Automated Processing**: Batch analysis of all 20 major white matter tracts
-- **Comprehensive Metrics**: Volume, percentage overlap, statistical values, and spatial coordinates
-- **Memory Efficient**: Cleans up intermediate files during processing
-- **Error Handling**: Manages cases with zero overlaps or missing data
-- **Standardized Output**: CSV format compatible with statistical software
+## Output
+The script generates a CSV file containing:
+- Tract labels and names
+- Voxel counts and volumes
+- Overlap statistics
+- Maximum Z-values
+- Center of gravity coordinates (X, Y, Z)
 
-## FSL Commands Used
-- `fslmaths`: Image mathematics and masking operations
-- `fslstats`: Statistical analysis and spatial measurements
-- Tract isolation: `-thr` and `-uthr` for label-based extraction
-- Volume calculation: `-V` flag for voxel count and volume
-- Center of gravity: `-C` flag for spatial coordinates
-- Statistical extraction: `-R` flag with `-k` masking
+## Analyzed Tracts
+The script analyzes bilateral tracts including:
+- Anterior thalamic radiation
+- Corticospinal tract
+- Cingulum (cingulate gyrus and hippocampus)
+- Forceps major and minor
+- Inferior fronto-occipital fasciculus
+- Inferior and superior longitudinal fasciculus
+- Uncinate fasciculus
+- Superior longitudinal fasciculus (temporal part)
 
-## Applications
-- **Lesion-deficit mapping**: Quantify white matter damage
-- **Functional connectivity**: Structure-function relationships
-- **Clinical research**: Track disease progression or treatment effects
-- **Comparative studies**: Between-group or longitudinal analyses
-- **Quality control**: Validate tractography results
-
-## Technical Notes
-- Assumes 2mm isotropic voxels (8mm³ per voxel)
-- Uses maximum probability thresholding (thr0)
-- Handles bilateral tract analysis with L/R designation
-- Compatible with standard MNI152 space
-- Outputs volumes in both mm³ and cm³ for convenience
-
+## Note
+This script is designed for neuroimaging research and requires proper understanding of DTI analysis and FSL tools.
