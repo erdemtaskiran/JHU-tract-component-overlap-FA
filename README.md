@@ -4,14 +4,14 @@
 This bash script performs automated analysis of white matter tract overlap with FA (Fractional Anisotropy) masks using the JHU DTI-based white matter atlas. It extracts volumetric measurements, statistical values, and spatial coordinates for specific brain regions of interest.
 
 ## Features
-- 🧠 Analyzes 20 major white matter tracts from the JHU-ICBM atlas
-- 📊 Calculates overlap between tract regions and user-defined FA masks
-- 📈 Extracts multiple metrics including:
+- � Analyzes 20 major white matter tracts from the JHU-ICBM atlas
+-  Calculates overlap between tract regions and user-defined FA masks
+-  Extracts multiple metrics including:
   - Voxel counts and volumes (mm³ and cm³)
   - Overlap percentages
   - Maximum Z-scores from statistical maps
   - Center of gravity (COG) coordinates
-- 📁 Outputs results in CSV format for easy analysis
+-  Outputs results in CSV format for easy analysis
 
 ## Requirements
 - FSL (FMRIB Software Library)
